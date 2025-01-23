@@ -131,10 +131,10 @@ int index_main(int argc, char **argv, char *full_cmd) {
         exit(EXIT_FAILURE);
     }
 
-    if (strcmp(parent_dirname, output_parent_abs_path) != 0) {
-        fprintf(stderr, "Input and output directories must have the same parent.\n");
-        exit(EXIT_FAILURE);
-    }
+    /*if (strcmp(parent_dirname, output_parent_abs_path) != 0) {*/
+        /*fprintf(stderr, "Input and output directories must have the same parent.\n");*/
+        /*exit(EXIT_FAILURE);*/
+    /*}*/
 
     // just the directory names of the input/output data without the rest of the path
     char input_dir_only[4096];
