@@ -145,18 +145,27 @@ int index_main(int argc, char **argv, char *full_cmd) {
     char input_dir_with_glob[4096];
     snprintf(input_dir_with_glob, 4096, "%s/%s", input_dir_only, glob_basename);
 
-    chdir(parent_dirname);
+    //chdir(parent_dirname);
     struct giggle_index *gi;
 
     if (s_is_set == 1) {
+        /*uint64_t num_intervals = giggle_bulk_insert_with_metadata(*/
+            /*input_dir_with_glob, output_dir_only, metadata_conf_name, f_is_set*/
+        /*);*/ 
+
+        char full_input_path[4096];
+        snprintf(full_input_path, 4096, "%s/%s", parent_dirname, input_dir_with_glob);
         uint64_t num_intervals = giggle_bulk_insert_with_metadata(
-            input_dir_with_glob, output_dir_only, metadata_conf_name, f_is_set
+            full_input_path,
+            output_dir_name,  // Use full output path instead of output_dir_only
+            metadata_conf_name,
+            f_is_set
         );
         fprintf(stderr, "Indexed %" PRIu64 " intervals.\n", num_intervals);
     } else {
         gi = giggle_init_with_metadata(
             num_chrms,
-            output_dir_only,
+            output_dir_name,  // Use full output path 
             metadata_conf_name,
             f_is_set,
             uint64_t_ll_giggle_set_data_handler
@@ -164,7 +173,21 @@ int index_main(int argc, char **argv, char *full_cmd) {
         if (gi == NULL)
             return EX_DATAERR;
 
-        uint32_t r = giggle_index_directory(gi, input_dir_with_glob, 0);
+        char full_input_path[4096];
+        snprintf(full_input_path, 4096, "%s/%s", parent_dirname, input_dir_with_glob);
+        uint32_t r = giggle_index_directory(gi, full_input_path, 0);
+
+        /*gi = giggle_init_with_metadata(*/
+            /*num_chrms,*/
+            /*output_dir_only,*/
+            /*metadata_conf_name,*/
+            /*f_is_set,*/
+            /*uint64_t_ll_giggle_set_data_handler*/
+        /*);*/
+        /*if (gi == NULL)*/
+            /*return EX_DATAERR;*/
+
+        /*uint32_t r = giggle_index_directory(gi, input_dir_with_glob, 0);*/
 
         fprintf(stderr, "Indexed %u intervals.\n", r);
 
